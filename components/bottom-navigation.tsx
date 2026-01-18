@@ -1,9 +1,7 @@
 "use client";
 
-import React from "react"
-
+import React, { useState } from "react";
 import { Home, Map, Camera, BarChart3, User } from "lucide-react";
-import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { CameraModal } from "@/components/camera-modal";
 
