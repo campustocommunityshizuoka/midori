@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import L from "leaflet";
+import "leaflet/dist/leaflet.css";
 
 // react-leafletをSSR無効化で動的インポート
 const MapContainer = dynamic(
@@ -25,11 +26,8 @@ const Popup = dynamic(
   { ssr: false }
 );
 
-// LeafletのCSSを動的に読み込む
+// マーカーアイコンのデフォルト設定（Next.jsで必要）
 if (typeof window !== "undefined") {
-  require("leaflet/dist/leaflet.css");
-  
-  // マーカーアイコンのデフォルト設定（Next.jsで必要）
   delete (L.Icon.Default.prototype as any)._getIconUrl;
   L.Icon.Default.mergeOptions({
     iconRetinaUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png",
@@ -63,11 +61,11 @@ export function MapView({
   }
 
   return (
-    <div className="w-full h-full relative" style={{ minHeight: "calc(100vh - 200px)" }}>
+    <div className="w-full h-[80vh] relative">
       <MapContainer
         center={center}
         zoom={zoom}
-        style={{ height: "100%", width: "100%", zIndex: 0 }}
+        className="h-full w-full"
         scrollWheelZoom={true}
       >
         <TileLayer
