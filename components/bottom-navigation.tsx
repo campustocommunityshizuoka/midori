@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState, ReactNode } from "react";
 import { Home, Map, Camera, BarChart3, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { CameraModal } from "@/components/camera-modal";
@@ -8,7 +8,7 @@ import { CameraModal } from "@/components/camera-modal";
 type NavItem = {
   id: string;
   label: string;
-  icon: React.ReactNode;
+  icon: ReactNode;
   isCamera?: boolean;
 };
 
@@ -20,8 +20,15 @@ const navItems: NavItem[] = [
   { id: "profile", label: "プロフィール", icon: <User className="w-5 h-5" /> },
 ];
 
-export function BottomNavigation() {
-  const [activeTab, setActiveTab] = useState("home");
+interface BottomNavigationProps {
+  currentTab?: string;
+  onTabChange?: (tab: string) => void;
+}
+
+export function BottomNavigation({ 
+  currentTab = "home",
+  onTabChange 
+}: BottomNavigationProps) {
   const [isCameraOpen, setIsCameraOpen] = useState(false);
 
   return (
@@ -34,7 +41,7 @@ export function BottomNavigation() {
               if (item.isCamera) {
                 setIsCameraOpen(true);
               } else {
-                setActiveTab(item.id);
+                onTabChange?.(item.id);
               }
             }}
             className={cn(
@@ -50,7 +57,7 @@ export function BottomNavigation() {
                   className={cn(
                     "w-16 h-16 rounded-full flex items-center justify-center shadow-lg transition-all duration-200",
                     "bg-primary text-primary-foreground",
-                    activeTab === item.id
+                    currentTab === item.id
                       ? "scale-110 shadow-xl ring-4 ring-primary/30"
                       : "hover:scale-105"
                   )}
@@ -60,7 +67,7 @@ export function BottomNavigation() {
                 <span
                   className={cn(
                     "text-[10px] mt-1 font-medium transition-colors",
-                    activeTab === item.id ? "text-primary" : "text-muted-foreground"
+                    currentTab === item.id ? "text-primary" : "text-muted-foreground"
                   )}
                 >
                   {item.label}
@@ -71,7 +78,7 @@ export function BottomNavigation() {
                 <div
                   className={cn(
                     "transition-colors",
-                    activeTab === item.id ? "text-primary" : "text-muted-foreground"
+                    currentTab === item.id ? "text-primary" : "text-muted-foreground"
                   )}
                 >
                   {item.icon}
@@ -79,7 +86,7 @@ export function BottomNavigation() {
                 <span
                   className={cn(
                     "text-[10px] font-medium transition-colors",
-                    activeTab === item.id ? "text-primary" : "text-muted-foreground"
+                    currentTab === item.id ? "text-primary" : "text-muted-foreground"
                   )}
                 >
                   {item.label}
